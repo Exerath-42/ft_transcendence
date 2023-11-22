@@ -1,0 +1,143 @@
+@import url("https://fonts.googleapis.com/css?family=Muli&display=swap");
+@import url("https://fonts.googleapis.com/css?family=Quicksand&display=swap");
+
+#lead {
+	width: 50rem;
+	height: 60rem 100%;
+	background-color: #ffffff;
+	-webkit-box-shadow: 0px 5px 15px 8px #e4e7fb;
+	box-shadow: 0px 5px 15px 8px #e4e7fb;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	border-radius: 0.5rem;
+	margin-top: 20px;
+}
+
+#header {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 2.5rem 2rem;
+}
+
+#h1 { 
+	font-family: "Rubik", sans-serif;
+	font-size: 1.7rem;
+	color: #141a39;
+	text-transform: uppercase;
+	cursor: default;
+}
+
+#leaderboard {
+	width: 100%;
+	position: relative;
+}
+
+table { 
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  color: #141a39;
+  cursor: default;
+ }
+
+tr {
+  transition: all 0.2s ease-in-out;
+  border-radius: 0.2rem;
+}
+
+tr:not(:first-child):hover {
+  background-color: #999999;
+  transform: scale(1.1);
+  -webkit-box-shadow: 0px 5px 15px 8px #e4e7fb;
+  box-shadow: 0px 5px 15px 8px #e4e7fb;
+}
+
+tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+tr:nth-child(1) {
+  color: #fff;
+}
+
+td {
+  height: 5rem;
+  font-family: "Rubik", sans-serif;
+  font-size: 1.4rem;
+  padding: 1rem 1.5rem;
+  position: relative;
+}
+
+.number {
+	width: 1rem;
+	font-size: 1.4rem;
+	font-weight: bold;
+}
+
+.name {
+	font-family: "Rubik", sans-serif;
+	font-size: 1.3rem;
+}
+
+.ribbon {
+	width: 52rem;
+	height: 5.5rem;
+	top: -0.5rem;
+	background-color: #5c5be5;
+	position: absolute;
+	left: -1rem;
+	-webkit-box-shadow: 0px 15px 11px -6px #7a7a7d;
+	box-shadow: 0px 15px 11px -6px #7a7a7d;
+}
+
+#buttons {
+	width: 100%;
+	margin-top: 3rem;
+	display: flex;
+	justify-content: center;
+	gap: 2rem;
+}
+
+.exit {
+	width: 6rem;
+	height: 3rem;
+	font-family: "Rubik", sans-serif;
+	font-size: 1.1rem;
+	text-transform: uppercase;
+	color: #5c5be5;
+	border: 0;
+	background-color: #fff;
+	border-radius: 2rem;
+	cursor: pointer;
+}
+
+.exit:hover {
+	border: 0.1rem solid #5c5be5;
+}
+
+@media (max-width: 840px) {
+	* {
+		font-size: 0.75rem;
+	}
+}
+
+@media (max-width: 600px) {
+	* {
+		font-size: 0.65rem;
+	}
+}
+
+@media (max-width: 490px) {
+	* {
+		font-size: 45%;
+	}
+}
+
+@media (max-width: 290px) {
+	* {
+		font-size: 35%;
+	}
+}

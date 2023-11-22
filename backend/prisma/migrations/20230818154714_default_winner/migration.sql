@@ -1,0 +1,6 @@
+-- AlterEnum
+ALTER TYPE "GameWinner" ADD VALUE 'NOTFINISHED';
+
+-- AlterTable
+ALTER TABLE "Game" ALTER COLUMN "score1" SET DEFAULT 0,
+ALTER COLUMN "score2" SET DEFAULT 0;

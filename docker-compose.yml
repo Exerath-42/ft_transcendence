@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+    ngnix:
+        build: ./nginx/
+        restart: always
+        depends_on:
+            - frontend
+            - backend
+        ports:
+            - "8080:80"
+            - "3001:3001"
+            - "3002:3002"
+        networks:
+            - transcendence
+
+    frontend:
+        env_file: .env
+        
+        build: ./frontend/
+        networks:
+            - transcendence
+        volumes:
+            - ./frontend:/app
+
+    backend:
+        env_file: .env
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: ${POSTGRES_DB}
+        build:
+            context: ./backend
+            dockerfile: dev.Dockerfile
+        
+        networks:
+            - transcendence
+        depends_on:
+            - BDD_postgresSQL
+        volumes:
+            - ./backend:/app
+        ports:
+            - "5555:5555"
+
+    BDD_postgresSQL:
+        image: postgres:13
+        env_file: .env
+        networks:
+            - transcendence
+
+networks:
+    transcendence:
+        driver: bridge

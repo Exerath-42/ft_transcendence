@@ -1,0 +1,179 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum USERSTATUS {
+  ONLINE
+  OFFLINE
+  GAME
+}
+
+model User {
+  id Int @id @default(autoincrement())
+
+  student_username String @unique
+  image_url        String
+
+  student_email String @unique
+
+  username String? @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  friends  User[] @relation("friends")
+  friendOf User[] @relation("friends")
+
+  blocks    User[] @relation("blocks")
+  blockedBy User[] @relation("blocks")
+
+  Chat     Chat[]
+  Message  Message[]
+  ChatUser ChatUser[]
+
+  sentMessages     DirectMessage[] @relation("MessageSender")
+  receivedMessages DirectMessage[] @relation("MessageRecipient")
+
+  twoFactorAuthenticationSecret    String?
+  isTwoFactorAuthenticationEnabled Boolean @default(false)
+  isTwoFactorAuthenticated         Boolean @default(false)
+
+  invitationsSent     GameInvitation[] @relation("inviter")
+  invitationsReceived GameInvitation[] @relation("invitee")
+
+  gamesAsPlayer1 Game[] @relation("player1")
+  gamesAsPlayer2 Game[] @relation("player2")
+
+  wins   Int @default(0)
+  losses Int @default(0)
+
+  status USERSTATUS @default(OFFLINE)
+
+  @@map("users")
+}
+
+model Chat {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  password    String    @default("")
+  hasPassword Boolean   @default(false)
+  isPrivate   Boolean   @default(false)
+  owner       User      @relation(fields: [ownerId], references: [id])
+  ownerId     Int
+  Message     Message[]
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  ChatUser  ChatUser[]
+
+  invitations GameInvitation[]
+}
+
+model Game {
+  id        Int  @id @default(autoincrement())
+  player1Id Int
+  player1   User @relation(fields: [player1Id], references: [id], name: "player1")
+
+  player2Id Int
+  player2   User @relation(fields: [player2Id], references: [id], name: "player2")
+
+  score1 Int @default(0)
+  score2 Int @default(0)
+
+  winner GameWinner? @default(NOTFINISHED)
+
+  invitationId Int?            @unique
+  invitation   GameInvitation? @relation(fields: [invitationId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Message {
+  id       Int  @id @default(autoincrement())
+  room     Chat @relation(fields: [roomId], references: [id])
+  roomId   Int
+  sender   User @relation(fields: [senderId], references: [id])
+  senderId Int
+
+  text String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model DirectMessage {
+  id Int @id @default(autoincrement())
+
+  sender   User @relation("MessageSender", fields: [senderId], references: [id])
+  senderId Int
+
+  recipient   User @relation("MessageRecipient", fields: [recipientId], references: [id])
+  recipientId Int
+
+  text String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ChatUser {
+  chatId Int
+  userId Int
+  member Boolean @default(false)
+  admin  Boolean @default(false)
+  mute   Boolean @default(false)
+
+  user User @relation(fields: [userId], references: [id])
+  chat Chat @relation(fields: [chatId], references: [id])
+
+  @@id([chatId, userId])
+}
+
+model GameInvitation {
+  id Int @id @default(autoincrement())
+
+  inviterId Int
+  inviter   User @relation(fields: [inviterId], references: [id], name: "inviter")
+
+  inviteeId Int?
+  invitee   User? @relation(fields: [inviteeId], references: [id], name: "invitee")
+
+  chat   Chat? @relation(fields: [chatId], references: [id])
+  chatId Int?
+
+  game Game?
+
+  inviteType InviteType   @default(USER)
+  status     InviteStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum InviteType {
+  USER
+  GROUP
+}
+
+enum InviteStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  EXPIRED
+}
+
+enum GameWinner {
+  PLAYER1
+  PLAYER2
+  DRAW
+  NOTFINISHED
+}

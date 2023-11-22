@@ -1,0 +1,23 @@
+@media (max-width: 768px) {
+    .react-p5{
+        transform: scale(0.8);
+    }
+}
+
+@media (max-width: 500px) {
+    .react-p5{
+        transform: scale(0.6);
+    }
+}
+
+@media (max-width: 400px) {
+    .react-p5{
+        transform: scale(0.5);
+    }
+}
+
+@media (max-width: 300px) {
+    .react-p5{
+        transform: scale(0.3);
+    }
+}
